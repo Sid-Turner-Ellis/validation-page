@@ -101,7 +101,10 @@ const SignUp = ({ title, text }) => {
   const handleSignUp = async () => {
     if (!status.loading && !status.signedUp) {
       setStatus((p) => ({ ...p, loading: true }));
-      ReactGA.event(GA_EVENTS.Cta2(value));
+      ReactGA.event(GA_EVENTS.Cta2(value), {
+        /** @abstr */
+        customParam: 2,
+      });
       // wait so that it doesnt feel too fast
       await new Promise((res) => {
         setTimeout(() => res(), 1000);

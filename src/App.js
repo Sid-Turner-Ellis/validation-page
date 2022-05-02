@@ -7,6 +7,7 @@ import ReactGA from "react-ga4";
 import { useLayoutEffect } from "react";
 import { getUserId } from "./utils";
 import { content } from "./content";
+import { useState } from "react";
 
 const MEASUREMENT_ID =
   process.env.NODE_ENV === "development"
@@ -39,15 +40,41 @@ const AppWrap = styled.div`
 `;
 
 function App() {
+  const [statefulContent, setStatefulContent] = useState(content);
   useLayoutEffect(() => {
-    const userId = getUserId();
-    ReactGA.initialize(MEASUREMENT_ID, {
-      gaOptions: {
-        userId,
-      },
-    });
+    (async () => {
+      /** */
+      const url = "https://x4k26suv.directus.app/items/images";
+      const req = await fetch(url);
+      const res = await req.json();
+      const { hero_image, feat_1, feat_2, feat_3, feat_4 } = res.data;
+      const fetchedImages = [feat_1, feat_2, feat_3, feat_4];
+      const newState = { ...statefulContent };
 
-    ReactGA.send("pageview");
+      if (hero_image) {
+        newState.landingImageUrl = hero_image;
+      }
+
+      newState.sections = newState.sections.map((section, i) => {
+        if (fetchedImages[i]) {
+          return { ...section, imageUrl: fetchedImages[i] };
+        }
+
+        return section;
+      });
+
+      setStatefulContent(newState);
+
+      /** */
+      const userId = getUserId();
+      ReactGA.initialize(MEASUREMENT_ID, {
+        gaOptions: {
+          userId,
+        },
+      });
+
+      ReactGA.send("pageview");
+    })();
   }, []);
 
   return (
@@ -58,9 +85,9 @@ function App() {
         <Landing
           title={content.landingTitle}
           text={content.landingText}
-          imageUrl={content.landingImageUrl}
+          imageUrl={statefulContent.landingImageUrl}
         />
-        <Features sections={content.sections} />
+        <Features sections={statefulContent.sections} />
         <SignUp title={content.signUpTitle} text={content.signUpText} />
       </AppWrap>
     </ThemeProvider>
