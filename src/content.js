@@ -2,7 +2,6 @@ import { createSection } from "./molecules/Section";
 
 export const content = {
   site: {
-    // also must change the manifest for this
     name: "slist",
     logoUrl: "logo.png",
   },
