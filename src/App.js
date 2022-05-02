@@ -34,7 +34,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const AppWrap = styled.div`
-  padding: 10px 20px;
+  padding: 10px 20px 0 10px;
   max-width: 1150px;
   margin: auto;
 `;
