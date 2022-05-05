@@ -44,7 +44,7 @@ function App() {
   useLayoutEffect(() => {
     (async () => {
       /** */
-      const url = "https://x4k26suv.directus.app/items/images";
+      const url = `https://x4k26suv.directus.app/items/images/${content.directusId}`;
       const req = await fetch(url);
       const res = await req.json();
       const { hero_image, feat_1, feat_2, feat_3, feat_4 } = res.data;

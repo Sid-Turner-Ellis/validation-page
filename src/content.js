@@ -1,6 +1,7 @@
 import { createSection } from "./molecules/Section";
 
 export const content = {
+  directusId: "1",
   site: {
     // also must change the manifest for this
     name: "slist",
